@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const i0 = require('../../libs/socket');
 const { JWT_SECRET } = process.env;
 //const Sentry = require('../libs/sentry');
-const { sendMail } = require('../helper/mailer');
+const { sendMail, getHTML } = require('../helper/mailer');
 const { saveNewNotif } = require('../notification/controllers');
 
 const register = async (req, res, next) => {
@@ -67,7 +67,12 @@ const forgotPassword = async (req, res, next) => {
         });
 
         // send email
-        await sendMail(email, 'Reset Password', `Click this link to reset your password: http://localhost:3000/reset-password?token=${token}`);
+        // await sendMail(email, 'Reset Password', `Click this link to reset your password: http://localhost:3000/reset-password?token=${token}`);
+        const url = `http://localhost:3000/reset-password?token=${token}`;
+        const name = user.name;
+        const html = await getHTML('verify.ejs', { url, name });
+        await sendMail(email, 'Reset Password', html);
+
         res.json({
             status: true,
             message: 'Token sent to your email!'
