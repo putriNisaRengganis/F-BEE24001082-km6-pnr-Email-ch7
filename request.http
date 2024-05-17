@@ -2,6 +2,32 @@
 POST: http://localhost:3000/register
 {
   "name": "putrinisa",
-  "password": "1234",
+  "password": "222222",
   "email": "putrinisarengganis@gmail.com"
 }
+
+### login
+GET: http://localhost:3000/login
+
+### notifications
+GET: http://localhost:3000/notifications
+
+### forgot-password post
+POST: http://localhost:3000/forgotPassword
+{
+  "email": "putrinisarengganis@gmail.com"
+}
+
+### forgot-password get
+GET: http://localhost:3000/forgot-password
+
+### reset-password get
+GET: http://localhost:3000/reset-password
+
+### resetPassword post
+POST: http://localhost:3000/resetPassword
+{
+  "password": "222222",
+  "confirmPassword": "222222"
+}
+
