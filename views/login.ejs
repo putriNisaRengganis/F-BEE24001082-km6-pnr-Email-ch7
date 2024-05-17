@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Silakan Login</h1>
+
+    <form action="" method="POST">
+        <input type="email" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit">Login</button>
+    </form>
+
+    <a href="/forgot-password">Lupa Password?</a>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        //if user login trigger socket event login
+        socket.on('login', (data) => {
+            console.log(data);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
+
+        
+
+    </script>
+
+    <script>
+        //on form submit
+        //make a post api request to /login
+
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if(!document.querySelector('input[name="email"]').value || !document.querySelector('input[name="password"]').value) {
+                return alert('Please enter email and password');
+            }
+
+            const email = document.querySelector('input[name="email"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+
+            const response = await fetch('/api-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if(data.error) {
+                return alert(data.error);
+            }
+
+            alert(data.message);
+
+            if(data.data.token && data.status == true) {
+                console.log(data.data.token);
+
+                //redirect to notifications page
+                window.location.href = `/notifications/${data.data.id}`
+            }
+
+            //refresh the page
+            window.location.href = '/login';
+        });
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,7 @@
+### post user
+POST: http://localhost:3000/register
+{
+  "name": "putrinisa",
+  "password": "1234",
+  "email": "putrinisarengganis@gmail.com"
+}

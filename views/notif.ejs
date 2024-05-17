@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Notification</h1>
+
+    <ol>
+        <% notif.forEach((nf) => { %>
+            <li><%= nf.message %></li>
+        <% }); %>
+        
+    </ol>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        socket.on('connect', () => {
+            console.log('Connected to server');
+        });
+
+        socket.on('notif', (data) => {
+            const li = document.createElement('li');
+            li.textContent = data.message;
+            document.querySelector('ol').appendChild(li);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+        });
+
+    </script>
+</body>
+</html>
